@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>mEATing point</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+         height: 80%;
+         width: 80%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <script src="markers.js"></script>
+    <script src="FindNearestMarkers.js"></script>
+
+    <script>
+
+      var map;
+      // This function initialises the map when called
+      function initMap() {
+        // This is the position of Kilburn on the map
+        var myLatLng = {lat:53.467479, lng: -2.233712};
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          // Change this value if closer zoom to Kilburn is required
+          zoom: 18,
+          // Map will be centralised about Kilburn position
+          center: myLatLng
+        });
+
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          title: 'mEATing point map'
+        });
+
+        google.maps.event.addListener(map, "click", findNearestMarkers(event));
+      }
+
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOPUtp-J4GoQb_cLm74RE7vb20atXRoPo&signed_in=true&callback=initMap">
+    </script>
+  </body>
+</html>
