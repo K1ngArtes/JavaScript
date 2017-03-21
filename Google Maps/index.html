@@ -44,7 +44,7 @@
           title: 'mEATing point map'
         });
 
-        google.maps.event.addListener(map, "click", findNearestMarkers(event));
+        map.addListener('click', findNearestMarkers);
       }
 
     </script>

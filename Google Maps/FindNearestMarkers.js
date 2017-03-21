@@ -5,7 +5,7 @@
 // anyway. Function converts degrees to radians
 function toRadians(degrees)
 {
-  return degrees * Math.Pi/180;
+  return degrees * Math.PI/180;
 }
 
 // Main job is done by this function. It implements haversine formula to solve
@@ -24,14 +24,22 @@ function findNearestMarkers(event)
   var distances = [];
   var closeMarkersCount = 0;
 
-  for(index = 0; index < locations.length; i++)
+  // Set the marker at the clicked position
+  addMarker(latitude, longitude);
+
+  for(index = 0; index < locations.length; index++)
   {
-    // Obtain the latitude and longitude of each marker
+    console.log("Inside the for loop!");
+    // Obtain the latitude and longitude of each location
     var markerLatitude = locations[index][1];
     var markerLongitude = locations[index][2];
 
+    console.log(toRadians(markerLatitude));
+
     var distanceLatitude = toRadians(markerLatitude - latitude);
     var distanceLongitude = toRadians(markerLongitude - longitude);
+
+    console.log(distanceLatitude);
 
     // More info on this here http://www.movable-type.co.uk/scripts/latlong.html
     var a = Math.sin(distanceLatitude/2) * Math.sin(distanceLatitude/2)
@@ -44,15 +52,40 @@ function findNearestMarkers(event)
     var d = radiusEarth * c * 1000;
     // So now distances will hold the distance from marker to the point in m
     distances[index] = d;
+    console.log("Index is " + index + " and distance is " + d);
 
     // If the place is inside marker area, add it to the map
     if(d <= markerRadius)
     {
+      console.log("I am inside if!");
       var marker = new google.maps.Marker({
-        position: map.markers.LatLng(markerLatitude, markerLongitude),
+        position: {lat: markerLatitude, lng: markerLongitude},
         map: map,
         title: locations[index][0]
       });
     }
   }
+}
+
+function addMarker(latitude, longitude)
+{
+  var clickMarker = new google.maps.Marker({
+    position: {lat: latitude, lng: longitude},
+    map: map,
+  });
+  // Define and add a circle, which will appear around the newly set marker
+  addCircle(clickMarker);
+}
+
+function addCircle(marker)
+{
+  center: marker.latLng();
+
+  var circle = new google.maps.Circle({
+    map: map,
+    radius: 1000,    // 10 miles in metres
+    fillColor: '#AA0000'
+  });
+
+  circle.bindTo('center', marker, 'position');
 }
