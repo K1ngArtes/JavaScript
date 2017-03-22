@@ -26,6 +26,12 @@
     <script>
 
       var map;
+      // This array will hold all the markers currently on the map
+      var markersArray = [];
+      // Array of circles (usually will be only one)
+      var circlesArray = [];
+
+
       // This function initialises the map when called
       function initMap() {
         // This is the position of Kilburn on the map
@@ -33,7 +39,7 @@
 
         map = new google.maps.Map(document.getElementById('map'), {
           // Change this value if closer zoom to Kilburn is required
-          zoom: 18,
+          zoom: 16,
           // Map will be centralised about Kilburn position
           center: myLatLng
         });
@@ -43,6 +49,9 @@
           map: map,
           title: 'mEATing point map'
         });
+
+        // Add newly created marker to the marker array
+        markersArray.push(marker);
 
         map.addListener('click', findNearestMarkers);
       }

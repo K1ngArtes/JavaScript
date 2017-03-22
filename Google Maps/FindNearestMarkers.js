@@ -20,16 +20,17 @@ function findNearestMarkers(event)
   // Radius of earth in km
   var radiusEarth = 6371;
   // Radius around the marker in meteres
-  var markerRadius = 1000;
-  var distances = [];
+  var markerRadius = 400;
   var closeMarkersCount = 0;
 
-  // Set the marker at the clicked position
+  // Delete all the previous markers on the map
+  clearOverlays();
+  // Set the marker at the clicked position with circle of certain radius around
   addMarker(latitude, longitude);
+  addCircle(latitude, longitude, markerRadius);
 
   for(index = 0; index < locations.length; index++)
   {
-    console.log("Inside the for loop!");
     // Obtain the latitude and longitude of each location
     var markerLatitude = locations[index][1];
     var markerLongitude = locations[index][2];
@@ -50,9 +51,6 @@ function findNearestMarkers(event)
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     var d = radiusEarth * c * 1000;
-    // So now distances will hold the distance from marker to the point in m
-    distances[index] = d;
-    console.log("Index is " + index + " and distance is " + d);
 
     // If the place is inside marker area, add it to the map
     if(d <= markerRadius)
@@ -63,7 +61,25 @@ function findNearestMarkers(event)
         map: map,
         title: locations[index][0]
       });
+      // Add newly created marker to markers array
+      markersArray.push(marker);
     }
+  }
+}
+
+// This function deletes all overlays on the map
+function clearOverlays()
+{
+  for(var index = 0; index < markersArray.length; index++)
+  {
+    markersArray[index].setMap(null);
+  }
+  // Clear the array
+  markersArray.length = 0;
+  // Delete the circle
+  for(var index = 0; index < circlesArray.length; index++)
+  {
+    circlesArray[index].setMap(null);
   }
 }
 
@@ -72,20 +88,24 @@ function addMarker(latitude, longitude)
   var clickMarker = new google.maps.Marker({
     position: {lat: latitude, lng: longitude},
     map: map,
+    animation: google.maps.Animation.DROP
   });
+
+  // Add newly created marker to markers array
+  markersArray.push(clickMarker);
   // Define and add a circle, which will appear around the newly set marker
   addCircle(clickMarker);
 }
 
-function addCircle(marker)
+function addCircle(latitude, longitude, radius)
 {
-  center: marker.latLng();
-
+  console.log("addCircle is called");
   var circle = new google.maps.Circle({
+    center: {lat: latitude, lng: longitude} ,
     map: map,
-    radius: 1000,    // 10 miles in metres
-    fillColor: '#AA0000'
+    radius: radius,
+    fillColor: '#ffa500'
   });
-
-  circle.bindTo('center', marker, 'position');
+  // Add circle to circle array
+  circlesArray.push(circle);
 }
