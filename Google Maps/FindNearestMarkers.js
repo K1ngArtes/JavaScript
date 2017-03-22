@@ -59,10 +59,12 @@ function findNearestMarkers(event)
       var marker = new google.maps.Marker({
         position: {lat: markerLatitude, lng: markerLongitude},
         map: map,
-        title: locations[index][0]
+        title: locations[index][0],
+        icon: markerIcons[closeMarkersCount % markerIcons.length][1]
       });
       // Add newly created marker to markers array
       markersArray.push(marker);
+      closeMarkersCount++;
     }
   }
 }

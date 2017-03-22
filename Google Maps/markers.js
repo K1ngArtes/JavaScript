@@ -13,3 +13,14 @@ var locations = [
   ["Union State (Victoria Hall)", 53.460137, -2.220365],
   ["Opal Gardens", 53.456625, -2.216359]
 ];
+
+var base = "markers/";
+// Array of marker icons
+var markerIcons = [
+  ["blue", base + "blue_MarkerA.png"],
+  ["brown", base + "brown_MarkerB.png"],
+  ["green", base + "darkgreen_MarkerC.png"],
+  ["paleblue", base + "paleblue_MarkerD.png"],
+  ["pink", base + "pink_MarkerE.png"],
+  ["purple", base + "purple_MarkerF.png"]
+];
